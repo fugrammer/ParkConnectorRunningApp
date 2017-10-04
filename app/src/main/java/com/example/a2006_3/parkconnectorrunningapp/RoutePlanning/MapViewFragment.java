@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +32,7 @@ public class MapViewFragment extends Fragment{
     MapView mMapView;
     private GoogleMap googleMap;
     ArrayList<Polyline> polylines;
-
+    private int colors[] = {Color.BLACK,Color.BLUE,Color.YELLOW, Color.GREEN, Color.MAGENTA, Color.DKGRAY};
     public interface PolylineClickListener {
         void onClick(int id);
     }
@@ -74,7 +75,18 @@ public class MapViewFragment extends Fragment{
                     googleMap.setOnPolylineClickListener(new GoogleMap.OnPolylineClickListener() {
                         @Override
                         public void onPolylineClick(Polyline polyline) {
+                            Log.e("Line clicked ",String.valueOf(polyline.getTag()));
                             polylineClickListener.onClick((int)polyline.getTag());
+                            for (Polyline polyline1:polylines){
+                                if ((int)polyline1.getTag()==(int)polyline.getTag()){
+                                    polyline1.setColor(Color.BLUE);
+                                    polyline1.setZIndex(1);
+                                }
+                                else{
+                                    polyline1.setZIndex(0.5f);
+                                    polyline1.setColor(Color.DKGRAY);
+                                }
+                            }
                         }
                     });
                 }
@@ -100,12 +112,20 @@ public class MapViewFragment extends Fragment{
             rectOptions.add(new LatLng(lat,lng));
             last = new LatLng(lat,lng);
         }
-        int colors[] = {Color.BLACK,Color.BLUE,Color.YELLOW, Color.GREEN, Color.MAGENTA, Color.DKGRAY};
+
         Polyline polyline = googleMap.addPolyline(rectOptions);
         polyline.setClickable(true);
-        polyline.setColor(colors[id]);
+        if (id==0){
+            polyline.setColor(Color.BLUE);
+            polyline.setZIndex(1);
+        }
+
+        else {
+            polyline.setColor(Color.DKGRAY);
+            polyline.setZIndex(0.5f);
+        }
         polyline.setTag(id);
-        polyline.setWidth(20);
+        polyline.setWidth(10);
         polyline.setStartCap(new RoundCap());
         polylines.add(polyline);
         // For zooming automatically to the location of the marker

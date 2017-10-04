@@ -28,6 +28,8 @@ public class RoutePlanner extends AppCompatActivity implements RouteAPI.RequestL
     private GoogleMap mMap;
     private String distance="20000";
     private String destination ="";
+    private int routeSelected = 0;
+    boolean firstTime = true;
     LocationManager locationManager;
     Location myLocation;
 
@@ -85,7 +87,10 @@ public class RoutePlanner extends AppCompatActivity implements RouteAPI.RequestL
         public void onLocationChanged(Location location) {
             // Called when a new location is found by the network location provider.
             myLocation = location;
-            getRoutes();
+            if (firstTime){
+                firstTime = false;
+                getRoutes();
+            }
             Log.e("LOCATION: ",myLocation.toString());
         }
         public void onStatusChanged(String provider, int status, Bundle extras) {}
