@@ -1,6 +1,7 @@
 package com.example.a2006_3.parkconnectorrunningapp.RoutePlanning;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -26,10 +27,23 @@ import com.google.android.gms.maps.model.RoundCap;
 
 import java.util.ArrayList;
 
-public class MapViewFragment extends Fragment {
+public class MapViewFragment extends Fragment{
     MapView mMapView;
     private GoogleMap googleMap;
     ArrayList<Polyline> polylines;
+
+    public interface PolylineClickListener {
+        void onClick(int id);
+    }
+
+    private PolylineClickListener polylineClickListener;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.polylineClickListener = (PolylineClickListener) context;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_map_view, container, false);
@@ -38,7 +52,6 @@ public class MapViewFragment extends Fragment {
         mMapView.onCreate(savedInstanceState);
 
         mMapView.onResume(); // needed to get the map to display immediately
-
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
         } catch (Exception e) {
@@ -49,18 +62,21 @@ public class MapViewFragment extends Fragment {
             @Override
             public void onMapReady(GoogleMap mMap) {
                 googleMap = mMap;
-
                 // For showing a move to my location button
                 if (checkPermission()) {
                     googleMap.setMyLocationEnabled(true);
-
                     // For dropping a marker at a point on the Map
-                    LatLng sydney = new LatLng(-34, 151);
-                    googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker Title").snippet("Marker Description"));
-
+//                    LatLng sydney = new LatLng(-34, 151);
+//                    googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker Title").snippet("Marker Description"));
                     // For zooming automatically to the location of the marker
-                    CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(12).build();
-                    googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+//                    CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(12).build();
+//                    googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                    googleMap.setOnPolylineClickListener(new GoogleMap.OnPolylineClickListener() {
+                        @Override
+                        public void onPolylineClick(Polyline polyline) {
+                            polylineClickListener.onClick((int)polyline.getTag());
+                        }
+                    });
                 }
             }
         });
@@ -86,6 +102,7 @@ public class MapViewFragment extends Fragment {
         }
         int colors[] = {Color.BLACK,Color.BLUE,Color.YELLOW, Color.GREEN, Color.MAGENTA, Color.DKGRAY};
         Polyline polyline = googleMap.addPolyline(rectOptions);
+        polyline.setClickable(true);
         polyline.setColor(colors[id]);
         polyline.setTag(id);
         polyline.setWidth(20);
@@ -125,4 +142,6 @@ public class MapViewFragment extends Fragment {
         return (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED );
     }
+
+
 }

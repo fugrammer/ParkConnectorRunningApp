@@ -1,5 +1,6 @@
 package com.example.a2006_3.parkconnectorrunningapp.RoutePlanning;
 
+import android.location.Location;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -11,26 +12,34 @@ import java.net.URL;
 class RouteAPI extends AsyncTask<Void, Void, String> {
 
     private Exception exception;
-    private String distance;
+    private String distance="", lat="", lng="", dlat="", dlng="";
 
     public interface RequestListener {
-        public void onFinished(String result);
+        void onFinished(String result);
     }
 
     private final RequestListener requestListener;
 
-    public RouteAPI(String distance,RequestListener requestListener) {
+    public RouteAPI(String distance, Location start, String destination, RequestListener requestListener) {
         super();
         this.distance = distance;
+        lat = String.valueOf(start.getLatitude());
+        lng = String.valueOf(start.getLongitude());
+        if (destination.compareTo("")!=0) {
+            dlat = destination.split(",")[0];
+            dlng = destination.split(",")[1];
+        }
         this.requestListener = requestListener;
-
     }
     protected void onPreExecute() {
     }
 
     protected String doInBackground(Void... params) {
         try {
-            URL url = new URL("https://parkconnector.herokuapp.com/parkconnector/?distance="+distance);
+            URL url = new URL("https://parkconnector.herokuapp.com/parkconnector/?distance="
+                    +distance+"&lat="+lat+"&lng="+lng+"&dlat="+dlat+"&dlng="+dlng);
+            Log.e("URL: ", "https://parkconnector.herokuapp.com/parkconnector/?distance="
+                    +distance+"&lat="+lat+"&lng="+lng+"&dlat="+dlat+"&dlng="+dlng);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             try {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));

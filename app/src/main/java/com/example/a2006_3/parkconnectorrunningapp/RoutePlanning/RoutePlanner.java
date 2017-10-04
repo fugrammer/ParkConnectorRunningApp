@@ -1,5 +1,12 @@
 package com.example.a2006_3.parkconnectorrunningapp.RoutePlanning;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,31 +23,35 @@ import org.json.JSONArray;
 
 import java.util.ArrayList;
 
-public class RoutePlanner extends AppCompatActivity implements RouteAPI.RequestListener, SeekBar.OnSeekBarChangeListener {
+public class RoutePlanner extends AppCompatActivity implements RouteAPI.RequestListener, MapViewFragment.PolylineClickListener {
 
     private GoogleMap mMap;
-    SeekBar distanceBar;
-    TextView distanceTextView;
     private String distance="20000";
+    private String destination ="";
+    LocationManager locationManager;
+    Location myLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_planner);
-        distanceBar = (SeekBar) findViewById(R.id.distanceBar);
-        distanceTextView = (TextView) findViewById(R.id.distanceTextView);
-        distanceBar.setOnSeekBarChangeListener(this);
-        Button activateButton = (Button) findViewById(R.id.activateButton);
-        activateButton.setOnClickListener(new View.OnClickListener() {
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        myLocation = new Location("");
+        myLocation.setLatitude(1.402955204229532d);
+        myLocation.setLongitude(103.9242875429241d);
+        if (checkPermission())
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+        Button confirmButton = (Button) findViewById(R.id.activateButton);
+        confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getRoutes();
+                // Intent to next page
             }
         });
     }
 
     private void getRoutes() {
-        new RouteAPI(distance, this).execute();
+        new RouteAPI(distance, myLocation, destination, this).execute();
     }
 
     @Override
@@ -70,24 +81,25 @@ public class RoutePlanner extends AppCompatActivity implements RouteAPI.RequestL
 
     }
 
-    @Override
-    public void onProgressChanged(SeekBar seekBar, int progress,
-                                  boolean fromUser) {
-
-        distance = String.valueOf(progress);
-        distanceTextView.setText(distance +"m");
-
-        //Toast.makeText(getApplicationContext(),"seekbar progress: "+progress, Toast.LENGTH_SHORT).show();
+    LocationListener locationListener = new LocationListener() {
+        public void onLocationChanged(Location location) {
+            // Called when a new location is found by the network location provider.
+            myLocation = location;
+            getRoutes();
+            Log.e("LOCATION: ",myLocation.toString());
+        }
+        public void onStatusChanged(String provider, int status, Bundle extras) {}
+        public void onProviderEnabled(String provider) {}
+        public void onProviderDisabled(String provider) {}
+    };
+    private boolean checkPermission() {
+        // Ask for permission if it wasn't granted yet
+        return (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED );
     }
 
     @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
-
+    public void onClick(int id) {
+        // To do
     }
-
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
-
-    }
-
 }
