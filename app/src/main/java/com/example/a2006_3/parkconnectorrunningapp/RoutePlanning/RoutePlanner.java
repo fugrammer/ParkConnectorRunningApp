@@ -9,20 +9,27 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Handler;
+import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.example.a2006_3.parkconnectorrunningapp.Commons.Coordinate;
+import com.example.a2006_3.parkconnectorrunningapp.Commons.DrawerItemCustomAdapter;
 import com.example.a2006_3.parkconnectorrunningapp.R;
 import com.google.android.gms.maps.GoogleMap;
 
@@ -30,7 +37,7 @@ import org.json.JSONArray;
 
 import java.util.ArrayList;
 
-public class RoutePlanner extends AppCompatActivity implements RouteAPI.RequestListener, MapViewFragment.PolylineClickListener {
+public class RoutePlanner extends AppCompatActivity implements ListView.OnItemClickListener, RouteAPI.RequestListener, MapViewFragment.PolylineClickListener {
 
     public static final String COORDINATES = "RoutePlanner.COORDINATES";
 
@@ -49,6 +56,8 @@ public class RoutePlanner extends AppCompatActivity implements RouteAPI.RequestL
     TextView runningTextView, cyclingTextView, distanceTextView, cyclingTextTextView,
             runningTextTextView, distanceTextTextView, expectedCalorieTextView;
     Button activateButton;
+
+    DrawerLayout dLayout;
 
     TextView timeTextView;
     int minElapsed = 0, secElapsed=0;
@@ -80,11 +89,15 @@ public class RoutePlanner extends AppCompatActivity implements RouteAPI.RequestL
         myLocation.setLongitude(103.9242875429241d);
         if (checkPermission())
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+
+        setNavigationDrawer();
     }
 
     public void startNavigation(View view){
         if (running==false) {
             running = true;
+            dLayout.closeDrawers();
+            dLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             mapViewFragment.clearRoutesBut(routeSelected);
             runningTextView.setVisibility(View.INVISIBLE);
             cyclingTextView.setVisibility(View.INVISIBLE);
@@ -98,6 +111,7 @@ public class RoutePlanner extends AppCompatActivity implements RouteAPI.RequestL
             mapViewFragment.zoomIn(myLocation);
             handler.postDelayed(runnable, 1000);
         }else{
+            dLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
             // Intent for next activity
 //        Intent intent = new Intent(RoutePlanner.this, Navigation.class);
 //        ArrayList<Coordinate> coordinates = routeList.get(routeSelected);
@@ -194,4 +208,22 @@ public class RoutePlanner extends AppCompatActivity implements RouteAPI.RequestL
             handler.postDelayed(this, 1000);
         }
     };
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Log.e("CLICKED",String.valueOf(position));
+    }
+
+    private void setNavigationDrawer() {
+        dLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        NavigationView navView = (NavigationView) findViewById(R.id.navigation);
+        navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                int itemId = menuItem.getItemId(); // get selected menu item's id
+                dLayout.closeDrawers();
+                return true;
+            }
+        });
+    }
 }
