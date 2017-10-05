@@ -13,18 +13,12 @@
         android:name="com.example.a2006_3.parkconnectorrunningapp.RoutePlanning.MapViewFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView5"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0" />
 
     <Button
         android:id="@+id/activateButton"
@@ -33,56 +27,123 @@
         android:layout_marginBottom="8dp"
         android:layout_marginRight="16dp"
         android:text="Confirm"
+        android:onClick="startNavigation"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginEnd="16dp" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/runningTextTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:text="Running"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/cyclingTextTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:text="Cycling"
-        app:layout_constraintBottom_toTopOf="@+id/textView2"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/runningTextTextView"
         app:layout_constraintLeft_toLeftOf="parent" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/expectedCalorieTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:text="Expected calories burnt"
-        app:layout_constraintBottom_toTopOf="@+id/textView4"
-        tools:layout_editor_absoluteX="16dp" />
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/cyclingTextTextView"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/cyclingTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="1dp"
         android:layout_marginRight="1dp"
         android:layout_marginTop="8dp"
         android:text="0"
-        app:layout_constraintRight_toRightOf="@+id/textView5"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        android:textColor="@android:color/black"
+        app:layout_constraintRight_toRightOf="@+id/expectedCalorieTextView"
+        app:layout_constraintTop_toBottomOf="@+id/expectedCalorieTextView" />
 
     <TextView
-        android:id="@+id/textView7"
+        android:id="@+id/runningTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="0dp"
         android:layout_marginTop="8dp"
         android:text="0"
-        app:layout_constraintRight_toRightOf="@+id/textView6"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+        android:textColor="@android:color/black"
+        app:layout_constraintRight_toRightOf="@+id/cyclingTextView"
+        app:layout_constraintTop_toBottomOf="@+id/cyclingTextView" />
+
+    <TextView
+        android:id="@+id/distanceTextTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:text="Distance"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@+id/expectedCalorieTextView"
+        app:layout_constraintTop_toTopOf="@+id/expectedCalorieTextView" />
+
+    <TextView
+        android:id="@+id/timeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:text="00:00"
+        android:textSize="30sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/activateButton"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/button2" />
+
+    <TextView
+        android:id="@+id/distanceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="0"
+        android:textColor="@android:color/black"
+        app:layout_constraintRight_toRightOf="@+id/distanceTextTextView"
+        app:layout_constraintTop_toBottomOf="@+id/distanceTextTextView" />
+
+    <ProgressBar
+        android:id="@+id/routePlannerProgressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/mapFragment"
+        tools:visibility="invisible"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
 
 </android.support.constraint.ConstraintLayout>

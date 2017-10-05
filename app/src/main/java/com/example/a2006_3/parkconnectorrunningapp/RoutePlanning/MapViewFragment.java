@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -33,10 +34,11 @@ public class MapViewFragment extends Fragment{
     private GoogleMap googleMap;
     ArrayList<Polyline> polylines;
     private int colors[] = {Color.BLACK,Color.BLUE,Color.YELLOW, Color.GREEN, Color.MAGENTA, Color.DKGRAY};
+    private int routeSelected = 0;
+
     public interface PolylineClickListener {
         void onClick(int id);
     }
-
     private PolylineClickListener polylineClickListener;
 
     @Override
@@ -89,9 +91,15 @@ public class MapViewFragment extends Fragment{
                             }
                         }
                     });
+                    try {
+                        polylineClickListener.onClick(-1);
+                    } catch (Exception e){
+                        Log.e("ERROR",e.toString());
+                    }
                 }
             }
         });
+
 
         return rootView;
     }
@@ -103,34 +111,51 @@ public class MapViewFragment extends Fragment{
         polylines.clear();
     }
 
-    public void displayRoute(ArrayList<Coordinate> coordinates, int id){
-        PolylineOptions rectOptions = new PolylineOptions();
-        LatLng last = new LatLng(-34, 151);
-        for (Coordinate coordinate : coordinates ){
-            float lat = coordinate.lat;
-            float lng = coordinate.lng;
-            rectOptions.add(new LatLng(lat,lng));
-            last = new LatLng(lat,lng);
+    public void clearRoutesBut(int id){
+        for (Polyline polyline : polylines){
+            if ((int) polyline.getTag() != id) {
+                polyline.remove();
+            }
         }
+    }
 
-        Polyline polyline = googleMap.addPolyline(rectOptions);
-        polyline.setClickable(true);
-        if (id==0){
-            polyline.setColor(Color.BLUE);
-            polyline.setZIndex(1);
-        }
-
-        else {
-            polyline.setColor(Color.DKGRAY);
-            polyline.setZIndex(0.5f);
-        }
-        polyline.setTag(id);
-        polyline.setWidth(10);
-        polyline.setStartCap(new RoundCap());
-        polylines.add(polyline);
-        // For zooming automatically to the location of the marker
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(last).zoom(12).build();
+    public void zoomIn(Location location){
+        LatLng start = new LatLng(location.getLatitude(),location.getLongitude());
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(start).zoom(15).build();
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+    }
+
+    public void displayRoute(ArrayList<Coordinate> coordinates, int id){
+        routeSelected = id;
+        try {
+            PolylineOptions rectOptions = new PolylineOptions();
+            LatLng last = new LatLng(-34, 151);
+            for (Coordinate coordinate : coordinates) {
+                float lat = coordinate.lat;
+                float lng = coordinate.lng;
+                rectOptions.add(new LatLng(lat, lng));
+                last = new LatLng(lat, lng);
+            }
+
+            Polyline polyline = googleMap.addPolyline(rectOptions);
+            polyline.setClickable(true);
+            if (id == 0) {
+                polyline.setColor(Color.BLUE);
+                polyline.setZIndex(1);
+            } else {
+                polyline.setColor(Color.DKGRAY);
+                polyline.setZIndex(0.5f);
+            }
+            polyline.setTag(id);
+            polyline.setWidth(10);
+            polyline.setStartCap(new RoundCap());
+            polylines.add(polyline);
+            // For zooming automatically to the location of the marker
+            CameraPosition cameraPosition = new CameraPosition.Builder().target(last).zoom(12).build();
+            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        }catch (Exception e){
+            Log.e("MAP ERROR",e.toString());
+        }
     }
 
     @Override
