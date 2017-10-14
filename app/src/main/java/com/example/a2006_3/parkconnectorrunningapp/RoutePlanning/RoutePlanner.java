@@ -1,8 +1,10 @@
 package com.example.a2006_3.parkconnectorrunningapp.RoutePlanning;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -70,8 +72,10 @@ public class RoutePlanner extends AppCompatActivity implements ListView.OnItemCl
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         // Get values from previous activity
-//        Intent intent = getIntent();
-//        coordinates = intent.getParcelableArrayListExtra (RoutePlanner.COORDINATES);
+        Intent intent = getIntent();
+        distance = String.valueOf(Math.round(intent.getFloatExtra("DISTANCE",2000f)));
+        destination = intent.getStringExtra("DESTINATION");
+        Log.v("Data received: ", distance + " " + destination);
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         runningTextView = (TextView) findViewById(R.id.runningTextView);
         cyclingTextView = (TextView) findViewById(R.id.cyclingTextView);
@@ -89,7 +93,6 @@ public class RoutePlanner extends AppCompatActivity implements ListView.OnItemCl
         myLocation.setLongitude(103.9242875429241d);
         if (checkPermission())
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
-
         setNavigationDrawer();
     }
 
@@ -158,6 +161,21 @@ public class RoutePlanner extends AppCompatActivity implements ListView.OnItemCl
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         } catch (Exception e) {
             Log.e("Error", "Invalid JSON Array");
+            outAnimation = new AlphaAnimation(1f, 0f);
+            outAnimation.setDuration(400);
+            progressBar.setAnimation(outAnimation);
+            progressBar.setVisibility(View.GONE);
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+            AlertDialog.Builder wrongCredentials  = new AlertDialog.Builder(this);
+            wrongCredentials.setMessage("There is no route found according to your preference.");
+            wrongCredentials.setTitle("Oops!");
+            wrongCredentials.setPositiveButton("Ok", new DialogInterface.OnClickListener(){
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent(RoutePlanner.this,RoutePlanning.class);
+                    startActivity(intent);
+                }
+            });
+            wrongCredentials.create().show();
         }
 
     }
@@ -221,6 +239,14 @@ public class RoutePlanner extends AppCompatActivity implements ListView.OnItemCl
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 int itemId = menuItem.getItemId(); // get selected menu item's id
+                String title = menuItem.getTitle().toString();
+                Log.e("ItemID",String.valueOf(itemId));
+                if (title.compareTo("Route Planning")==0){
+                    Intent intent = new Intent(RoutePlanner.this,RoutePlanning.class);
+                    startActivity(intent);
+                }else{
+                    // Setting intent
+                }
                 dLayout.closeDrawers();
                 return true;
             }
