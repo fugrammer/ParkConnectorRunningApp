@@ -26,6 +26,8 @@
         <activity android:name=".RoutePlanning.RoutePlanning"/>
         <activity android:name=".RoutePlanning.Navigation" />
         <activity android:name=".Login.Register" />
+        <activity android:name=".RoutePlanning.WorkoutSummary" />
+        <activity android:name=".RoutePlanning.Profile" />
     </application>
 
 </manifest>

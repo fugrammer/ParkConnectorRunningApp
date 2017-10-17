@@ -116,10 +116,12 @@ public class RoutePlanner extends AppCompatActivity implements ListView.OnItemCl
         }else{
             dLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
             // Intent for next activity
-//        Intent intent = new Intent(RoutePlanner.this, Navigation.class);
+            Intent intent = new Intent(RoutePlanner.this, WorkoutSummary.class);
+            intent.putExtra("time",minElapsed);
+            intent.putExtra("distance",distance);
 //        ArrayList<Coordinate> coordinates = routeList.get(routeSelected);
 //        intent.putParcelableArrayListExtra(this.COORDINATES,coordinates);
-//        startActivity(intent);
+            startActivity(intent);
         }
     }
 
@@ -246,6 +248,8 @@ public class RoutePlanner extends AppCompatActivity implements ListView.OnItemCl
                     startActivity(intent);
                 }else{
                     // Setting intent
+                    Intent intent = new Intent(RoutePlanner.this,Profile.class);
+                    startActivity(intent);
                 }
                 dLayout.closeDrawers();
                 return true;

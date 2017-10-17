@@ -130,6 +130,8 @@ public class RoutePlanning extends AppCompatActivity {
                 if (title.compareTo("Route Planning")==0){
                 }else{
                     // Setting intent
+                    Intent intent = new Intent(RoutePlanning.this,Profile.class);
+                    startActivity(intent);
                 }
                 dLayout.closeDrawers();
                 return true;
