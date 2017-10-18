@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.content.Intent;
 import android.widget.EditText;
+import android.os.AsyncTask;
+import android.widget.Toast;
 
 import com.example.a2006_3.parkconnectorrunningapp.R;
 import com.example.a2006_3.parkconnectorrunningapp.RoutePlanning.RoutePlanning;
@@ -12,8 +14,7 @@ import com.example.a2006_3.parkconnectorrunningapp.RoutePlanning.RoutePlanning;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
-public class Register extends AppCompatActivity {
-
+public class Register extends AppCompatActivity implements RegisterAPI.RequestListener {
     EditText new_user, new_pass, new_email;
 
     @Override
@@ -31,7 +32,10 @@ public class Register extends AppCompatActivity {
         startActivity(intent_cancel);
     }
 
+
     public void register(View view){
+        String username = new_user.getText().toString();
+        String password = new_pass.getText().toString();
         //handle empty username
         if(new_user.getText().toString().trim().isEmpty()){
             new_user.setError("Please enter your name.");
@@ -47,11 +51,30 @@ public class Register extends AppCompatActivity {
             new_email.setError("Please enter your email address.");
             new_email.requestFocus();
         }
-
         else {
-            Intent intent_register = new Intent(Register.this, RoutePlanning.class);
-            startActivity(intent_register);
+            AsyncTask<Void, Void, String> l =  new RegisterAPI(username, password, this).execute();
         }
+    }
+
+    @Override
+    public void onFinished(String registerJSON) {
+        if(registerJSON.contains("Success")){
+            Intent intent_redirect = new Intent(Register.this, RoutePlanning.class);
+            startActivity(intent_redirect);
+        }
+        else if(registerJSON.contains("taken")){
+            Toast.makeText(getApplicationContext(),"Username has been taken. Try again!", Toast.LENGTH_LONG).show();
+            new_user.setText("");
+            new_pass.setText("");
+            new_email.setText("");
+        }
+        else{
+            Toast.makeText(getApplicationContext(),"Unknown error. Try again!", Toast.LENGTH_LONG).show();
+            new_user.setText("");
+            new_pass.setText("");
+            new_email.setText("");
+        }
+
     }
 
     private boolean isValidEmail(String Email){
