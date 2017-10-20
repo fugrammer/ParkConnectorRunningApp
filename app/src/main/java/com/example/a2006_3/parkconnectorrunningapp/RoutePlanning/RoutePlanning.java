@@ -1,6 +1,7 @@
 package com.example.a2006_3.parkconnectorrunningapp.RoutePlanning;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -13,83 +14,90 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.example.a2006_3.parkconnectorrunningapp.Commons.Coordinate;
 import com.example.a2006_3.parkconnectorrunningapp.R;
 
 public class RoutePlanning extends AppCompatActivity {
-    AutoCompleteTextView acTextView;
-    TextView txtview;
-    float x, y,distance;
-    EditText editText;
     String[] connectors = {"Kallang", "Bishan","JurongWest","Jurong","BukitBatok","PeltonCanal", "UluPandan", "WestCoastPark", "ChuaChuKang"};
-    Button confirm;
+    double x, y,distance;
+    EditText editText;
+    AutoCompleteTextView acTxtview;
+    Button distSubmitButton,endpointSubmitButton;
+    Button endpointButton,distanceButton;
     DrawerLayout dLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_planning);
 
-        //choose end point
-        acTextView = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView);
+
+
+        //autocomplete for endpoint
+        acTxtview = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView);
+        acTxtview.setVisibility(View.INVISIBLE);
+
+        //edit text for distance
+        editText = (EditText) findViewById(R.id.editText);
+        editText.setVisibility(View.VISIBLE);
+
+        distSubmitButton = (Button) findViewById(R.id.DistanceSubmitButton);
+        distSubmitButton.setVisibility(View.VISIBLE);
+
+        endpointSubmitButton = (Button) findViewById(R.id.EndpointSubmitButton);
+        endpointSubmitButton.setVisibility(View.INVISIBLE);
+
+        //for the autocomplete
         ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.select_dialog_item,connectors);
+        acTxtview.setThreshold(1);
+        acTxtview.setAdapter(adapter);
 
-        acTextView.setThreshold(1);
-        acTextView.setAdapter(adapter);
-
-        //a testing textview to see the values stored
-        txtview = (TextView) findViewById(R.id.textView4);
-
-        acTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        acTxtview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //get the end point selected by user
                 String selection = (String)parent.getItemAtPosition(position);
 
                 if (selection == "Kallang") {
-                    x = 1.306609f;
-                    y = 103.869922f;
+                    x = 1.306609;
+                    y = 103.869922;
                 }
                 else if (selection == "JurongWest") {
-                    x = 1.353074f;
-                    y = 103.714731f;
+                    x = 1.353074;
+                    y = 103.714731;
                 }
                 else if (selection == "Jurong") {
-                    x = 1.342577f;
-                    y = 103.719879f;
+                    x = 1.342577;
+                    y = 103.719879;
                 }
                 else if (selection == "BukitBatok") {
-                    x = 1.322336f;
-                    y = 103.881873f;
+                    x = 1.322336;
+                    y = 103.881873;
                 }
                 else if (selection == "PeltonCanal") {
-                    x = 1.356762f;
-                    y = 103.753643f;
+                    x = 1.356762;
+                    y = 103.753643;
                 }
                 else if (selection == "Bishan") {
-                    x = 1.363456f;
-                    y = 103.843573f;
+                    x = 1.363456;
+                    y = 103.843573;
                 }
                 else if (selection == "UluPandan") {
-                    x = 1.312644f;
-                    y = 103.779675f;
+                    x = 1.312644;
+                    y = 103.779675;
                 }
                 else if (selection == "WestCoastPark") {
-                    x = 1.317598f;
-                    y = 103.754378f;
+                    x = 1.317598;
+                    y = 103.754378;
                 }
                 else if (selection == "ChuaChuKang") {
-                    x = 1.387777f;
-                    y = 103.747071f;
+                    x = 1.387777;
+                    y = 103.747071;
                 }
                 else x = 0;
-                Coordinate coordinate = new Coordinate(x,y);
-                Intent intent = new Intent(RoutePlanning.this, RoutePlanner.class);
-                intent.putExtra("DESTINATION",String.valueOf(x)+","+String.valueOf(y));
-                intent.putExtra("DISTANCE",0f);
-                startActivity(intent);
+
                 // check the value of x
                 //txtview.setText(""+x);
 
@@ -97,24 +105,70 @@ public class RoutePlanning extends AppCompatActivity {
         });
 
 
-        //choose distance
-        editText = (EditText) findViewById(R.id.editText);
 
-        confirm = (Button) findViewById(R.id.button);
-        confirm.setOnClickListener(new View.OnClickListener() {
+
+        //user selects distance
+        distanceButton = (Button) findViewById(R.id.DistanceButton);
+        distanceButton.setBackgroundColor(Color.LTGRAY);
+
+        distanceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                distance = Float.parseFloat(editText.getText().toString())*1000;
-                //check the value of distance
-                Intent intent = new Intent(RoutePlanning.this, RoutePlanner.class);
-                intent.putExtra("DESTINATION","");
-                intent.putExtra("DISTANCE",distance);
-                startActivity(intent);
-                txtview.setText(""+distance);
+                editText.setVisibility(View.VISIBLE);
+                acTxtview.setVisibility(View.INVISIBLE);
+                distSubmitButton.setVisibility(View.VISIBLE);
+                endpointSubmitButton.setVisibility(View.INVISIBLE);
+                endpointButton.setBackgroundColor(Color.GRAY);
+                distanceButton.setBackgroundColor(Color.LTGRAY);
+
+                distSubmitButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        distance = Float.parseFloat(editText.getText().toString())*1000;
+                        //check the value of distance
+                        Intent intent = new Intent(RoutePlanning.this, RoutePlanner.class);
+                        intent.putExtra("DESTINATION","");
+                        intent.putExtra("DISTANCE",distance);
+                        startActivity(intent);
+                    }
+                });
+
             }
         });
 
-        setNavigationDrawer();
+        //user selects endpoint
+        endpointButton = (Button) findViewById(R.id.EndpointButton);
+        endpointButton.setBackgroundColor(Color.GRAY);
+
+        endpointButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                acTxtview.setVisibility(View.VISIBLE);
+                endpointButton.setBackgroundColor(Color.LTGRAY);
+                distanceButton.setBackgroundColor(Color.GRAY);
+
+                editText.setVisibility(View.INVISIBLE);
+                endpointSubmitButton.setVisibility(View.VISIBLE);
+                distSubmitButton.setVisibility(View.INVISIBLE);
+
+
+
+                endpointSubmitButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(RoutePlanning.this, RoutePlanner.class);
+                        intent.putExtra("DESTINATION",String.valueOf(x)+","+String.valueOf(y));
+                        intent.putExtra("DISTANCE",0f);
+                        startActivity(intent);
+                    }
+                });
+            }
+        });
+
+
+
+
+    setNavigationDrawer();
 
     }
 
