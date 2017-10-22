@@ -62,14 +62,8 @@ public class Register extends AppCompatActivity implements RegisterAPI.RequestLi
             Intent intent_redirect = new Intent(Register.this, RoutePlanning.class);
             startActivity(intent_redirect);
         }
-        else if(registerJSON.contains("taken")){
-            Toast.makeText(getApplicationContext(),"Username has been taken. Try again!", Toast.LENGTH_LONG).show();
-            new_user.setText("");
-            new_pass.setText("");
-            new_email.setText("");
-        }
         else{
-            Toast.makeText(getApplicationContext(),"Unknown error. Try again!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),"Username has been taken. Try again!", Toast.LENGTH_LONG).show();
             new_user.setText("");
             new_pass.setText("");
             new_email.setText("");
