@@ -2,6 +2,7 @@ package com.example.a2006_3.parkconnectorrunningapp.RoutePlanning;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.StrictMode;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -128,7 +129,8 @@ public class RoutePlanning extends AppCompatActivity {
                         //check the value of distance
                         Intent intent = new Intent(RoutePlanning.this, RoutePlanner.class);
                         intent.putExtra("DESTINATION","");
-                        intent.putExtra("DISTANCE",distance);
+                        intent.putExtra("DISTANCE",(float) distance);
+                        Log.e("Submitted distance: ",String.valueOf(distance));
                         startActivity(intent);
                     }
                 });
@@ -150,7 +152,6 @@ public class RoutePlanning extends AppCompatActivity {
                 editText.setVisibility(View.INVISIBLE);
                 endpointSubmitButton.setVisibility(View.VISIBLE);
                 distSubmitButton.setVisibility(View.INVISIBLE);
-
 
 
                 endpointSubmitButton.setOnClickListener(new View.OnClickListener() {

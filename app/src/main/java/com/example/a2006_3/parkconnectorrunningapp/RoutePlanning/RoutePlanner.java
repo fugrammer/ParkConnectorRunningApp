@@ -75,7 +75,7 @@ public class RoutePlanner extends AppCompatActivity implements ListView.OnItemCl
         Intent intent = getIntent();
         distance = String.valueOf(Math.round(intent.getFloatExtra("DISTANCE",2000f)));
         destination = intent.getStringExtra("DESTINATION");
-        Log.v("Data received: ", distance + " " + destination);
+        Log.e("Data received: ", distance + " " + destination);
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         runningTextView = (TextView) findViewById(R.id.runningTextView);
         cyclingTextView = (TextView) findViewById(R.id.cyclingTextView);
@@ -91,8 +91,11 @@ public class RoutePlanner extends AppCompatActivity implements ListView.OnItemCl
         myLocation = new Location("");
         myLocation.setLatitude(1.402955204229532d);
         myLocation.setLongitude(103.9242875429241d);
-        if (checkPermission())
+        if (checkPermission()) {
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+        } else{
+            Log.e("Error", "No permission for location");
+        }
         setNavigationDrawer();
     }
 
@@ -119,8 +122,6 @@ public class RoutePlanner extends AppCompatActivity implements ListView.OnItemCl
             Intent intent = new Intent(RoutePlanner.this, WorkoutSummary.class);
             intent.putExtra("time",minElapsed);
             intent.putExtra("distance",distance);
-//        ArrayList<Coordinate> coordinates = routeList.get(routeSelected);
-//        intent.putParcelableArrayListExtra(this.COORDINATES,coordinates);
             startActivity(intent);
         }
     }

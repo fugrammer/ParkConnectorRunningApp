@@ -1,5 +1,7 @@
 package com.example.a2006_3.parkconnectorrunningapp.Login;
 
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -14,6 +16,9 @@ import com.example.a2006_3.parkconnectorrunningapp.R;
 import com.example.a2006_3.parkconnectorrunningapp.RoutePlanning.RoutePlanning;
 
 public class Login extends AppCompatActivity implements LoginAPI.RequestListener {
+    String[] perms = {"android.permission.ACCESS_FINE_LOCATION",
+            "android.permission.ACCESS_COARSE_LOCATION",
+            "android.permission.INTERNET"};
     EditText user, pass;
     Button login;
 
@@ -24,6 +29,10 @@ public class Login extends AppCompatActivity implements LoginAPI.RequestListener
 
         user = (EditText) findViewById(R.id.username);
         pass = (EditText) findViewById(R.id.password);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(perms, 200);
+        }
     }
 
     public void redirect(View view) {
@@ -63,6 +72,23 @@ public class Login extends AppCompatActivity implements LoginAPI.RequestListener
     public void new_user(View view){
         Intent intent_new_user = new Intent(Login.this, Register.class);
         startActivity(intent_new_user);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 200: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+        }
     }
 
 }
