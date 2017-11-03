@@ -105,7 +105,18 @@ public class RoutePlanning extends AppCompatActivity {
             }
         });
 
-
+        distSubmitButton.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            distance = Float.parseFloat(editText.getText().toString())*1000;
+            //check the value of distance
+            Intent intent = new Intent(RoutePlanning.this, RoutePlanner.class);
+            intent.putExtra("DESTINATION","");
+            intent.putExtra("DISTANCE",(float) distance);
+            Log.e("Submitted distance: ",String.valueOf(distance));
+            startActivity(intent);
+          }
+        });
 
 
         //user selects distance
