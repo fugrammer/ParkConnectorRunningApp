@@ -122,7 +122,7 @@ public class RoutePlanner extends AppCompatActivity implements ListView.OnItemCl
             Intent intent = new Intent(RoutePlanner.this, WorkoutSummary.class);
             intent.putExtra("time",minElapsed);
             intent.putExtra("timeSec",secElapsed);
-            intent.putExtra("distance",distance);
+            intent.putExtra("distance",distanceTextView.getText());
             intent.putExtra("running",runningTextView.getText());
             intent.putExtra("cycling",cyclingTextView.getText());
             startActivity(intent);
