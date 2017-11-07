@@ -8,7 +8,8 @@ public class DataAdapter {
 
     String username;
     int dist;
-    int time;
+    int min;
+    int sec;
     int cal;
     String date;
 
@@ -28,12 +29,20 @@ public class DataAdapter {
         this.dist = dist1;
     }
 
-    public int getTime() {
-        return time;
+    public int getMin() {
+        return min;
     }
 
-    public void setTime(int time1) {
-        this.time = time1;
+    public void setMin(int min1) {
+        this.min = min1;
+    }
+
+    public int getSec() {
+        return sec;
+    }
+
+    public void setSec(int sec1) {
+        this.sec = sec1;
     }
 
     public int getCal() {

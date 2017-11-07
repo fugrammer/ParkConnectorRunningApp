@@ -37,7 +37,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         DataAdapter dataAdapter =  dataAdapters.get(position);
         //viewHolder.TextViewUsername.setText(String.valueOf(dataAdapter.getUsername()));
         viewHolder.TextViewDist.setText(Integer.toString(dataAdapter.getDist()));
-        viewHolder.TextViewTime.setText(Integer.toString(dataAdapter.getTime()));
+        viewHolder.TextViewMins.setText(Integer.toString(dataAdapter.getMin()));
+        viewHolder.TextViewSeconds.setText(Integer.toString(dataAdapter.getSec()));
         viewHolder.TextViewCal.setText(Integer.toString(dataAdapter.getCal()));
         viewHolder.TextViewDate.setText(dataAdapter.getDate());
     }
@@ -50,7 +51,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     class ViewHolder extends RecyclerView.ViewHolder{
         public TextView TextViewUsername;
         public TextView TextViewDist;
-        public TextView TextViewTime;
+        public TextView TextViewMins;
+        public TextView TextViewSeconds;
         public TextView TextViewCal;
         public TextView TextViewDate;
 
@@ -58,7 +60,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             super(itemView);
             //TextViewUsername = (TextView) itemView.findViewById(R.id.textView2) ;
             TextViewDist = (TextView) itemView.findViewById(R.id.disttextView) ;
-            TextViewTime = (TextView) itemView.findViewById(R.id.timetextView) ;
+            TextViewMins = (TextView) itemView.findViewById(R.id.mintextView) ;
+            TextViewSeconds = (TextView) itemView.findViewById(R.id.sectextView) ;
             TextViewCal = (TextView) itemView.findViewById(R.id.caltextView) ;
             TextViewDate = (TextView) itemView.findViewById(R.id.datetextView);
         }

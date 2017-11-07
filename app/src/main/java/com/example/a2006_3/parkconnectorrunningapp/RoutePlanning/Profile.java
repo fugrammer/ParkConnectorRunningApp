@@ -48,7 +48,7 @@ public class Profile extends AppCompatActivity implements ProfileAPI.RequestList
 
         //Get data from backend to show user's history of routes
         // to-do: some way to pass username into ProfileAPI()
-        new ProfileAPI("songwei",this).execute(); // for testing only
+        new ProfileAPI("trudy",this).execute(); // for testing only
 
     }
     @Override
@@ -61,7 +61,9 @@ public class Profile extends AppCompatActivity implements ProfileAPI.RequestList
 
                 try {
                     JSONObject object = reader.getJSONObject(i);
-                    GetDataAdapter2.setTime(object.getInt("timetaken"));
+                    //GetDataAdapter2.setTime(object.getInt("timetaken"));
+                    GetDataAdapter2.setMin(object.getInt("minutes"));
+                    GetDataAdapter2.setSec(object.getInt("seconds"));
                     GetDataAdapter2.setDist(object.getInt("distance"));
                     GetDataAdapter2.setCal(object.getInt("calorie"));
                     GetDataAdapter2.setDate(object.getString("date"));

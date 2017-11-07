@@ -20,53 +20,75 @@
         android:layout_height="wrap_content">
 
         <TableRow>
+
             <TextView
                 android:id="@+id/datetextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
                 android:text="Date Show here "
                 android:textColor="#ffff"
-                />
+                android:textSize="20dp" />
         </TableRow>
 
         <TableRow>
+
             <TextView
                 android:id="@+id/timelabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:text="Time taken : "
+                android:text="Minutes : "
                 android:textColor="#ffff"
-                />
+                android:textSize="20dp" />
+
 
             <TextView
-                android:id="@+id/timetextView"
+                android:id="@+id/mintextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:text="Time taken Show Here"
-                android:textColor="#ffff"/>
+                android:text="Minutes Show Here"
+                android:textColor="#ffff"
+                android:textSize="16dp" />
+
         </TableRow>
 
         <TableRow>
+
+            <TextView
+                android:id="@+id/seclabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Seconds : "
+                android:textColor="#ffff"
+                android:textSize="20dp" />
+
+
+            <TextView
+                android:id="@+id/sectextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Seconds Show Here"
+                android:textColor="#ffff"
+                android:textSize="16dp" />
+
+        </TableRow>
+
+        <TableRow>
+
             <TextView
                 android:id="@+id/distlabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
                 android:text="Distance : "
                 android:textColor="#ffff"
-                />
+                android:textSize="20dp" />
 
             <TextView
                 android:id="@+id/disttextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16dp"
                 android:text="Distance Show Here"
                 android:textColor="#ffff"
-                />
+                android:textSize="16dp" />
         </TableRow>
 
         <TableRow>
@@ -75,19 +97,17 @@
                 android:id="@+id/callabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
                 android:text="Calories burned : "
                 android:textColor="#ffff"
-                />
+                android:textSize="20dp" />
 
             <TextView
                 android:id="@+id/caltextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16dp"
                 android:text="Calories Show Here"
                 android:textColor="#ffff"
-                />
+                android:textSize="16dp" />
         </TableRow>
 
     </TableLayout>

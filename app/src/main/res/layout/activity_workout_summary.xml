@@ -7,6 +7,33 @@
     tools:context="com.example.a2006_3.parkconnectorrunningapp.RoutePlanning.WorkoutSummary">
 
     <TextView
+        android:id="@+id/minutesUnitsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="min"
+        app:layout_constraintBaseline_toBaselineOf="@+id/summaryminutesTextView"
+        app:layout_constraintLeft_toRightOf="@+id/summaryminutesTextView"
+        android:layout_marginLeft="0dp" />
+
+    <TextView
+        android:id="@+id/secondsUnitsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="s"
+        app:layout_constraintLeft_toRightOf="@+id/summarysecondsTextView"
+        android:layout_marginLeft="0dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/summarysecondsTextView" />
+
+    <TextView
+        android:id="@+id/summarysecondsTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00"
+        android:layout_marginLeft="288dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBaseline_toBaselineOf="@+id/minutesUnitsLabel" />
+
+    <TextView
         android:id="@+id/distance"
         android:layout_width="81dp"
         android:layout_height="21dp"
@@ -77,10 +104,10 @@
         android:layout_marginBottom="8dp" />
 
     <TextView
-        android:id="@+id/summarytimeTextView"
+        android:id="@+id/summaryminutesTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="123mins"
+        android:text="00"
         app:layout_constraintBaseline_toBaselineOf="@+id/timetakenLabel"
         app:layout_constraintLeft_toRightOf="@+id/timetakenLabel"
         android:layout_marginLeft="86dp" />
