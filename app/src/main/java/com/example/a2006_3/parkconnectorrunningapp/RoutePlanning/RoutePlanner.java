@@ -209,7 +209,7 @@ public class RoutePlanner extends AppCompatActivity implements ListView.OnItemCl
     }
 
     private void updateTextViews(int id){
-        distanceTextView.setText(String.format("%.1f",routeDistance.get(id)));
+        distanceTextView.setText(String.format("%.1f",routeDistance.get(id)/1000));
         cyclingTextView.setText(String.format("%.1f",routeDistance.get(id)/1000*60.625));
         runningTextView.setText(String.format("%.1f",routeDistance.get(id)/1000*30));
     }

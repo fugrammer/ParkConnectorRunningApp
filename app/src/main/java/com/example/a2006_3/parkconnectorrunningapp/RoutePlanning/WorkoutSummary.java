@@ -31,12 +31,12 @@ public class WorkoutSummary extends AppCompatActivity {
         time = intent.getIntExtra("time",0);
         int sec = intent.getIntExtra("timeSec",0);
         distance = intent.getStringExtra("distance");
-        float _distance = Float.valueOf(distance)/1000.0f;
+        
         // Added by Thomas
         summarytimeTextView.setText(String.valueOf(time)+ " min " + String.valueOf(sec)+" sec");
-        summarydistTextView.setText(String.format("%.2f",_distance)+" km");
+        summarydistTextView.setText(distance+" km");
         summarycaloriesTextView.setText(intent.getStringExtra("running") + " cal");
-        ((TextView)findViewById(R.id.summarycaloriesCyclingTextView)).setText(intent.getStringExtra("cycling") + " cal");
+        ((TextView)findViewById(R.id.summarycaloriesCyclingTextView)).setText(intent.getStringExtra("running") + " cal");
         findViewById(R.id.finishWorkout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
