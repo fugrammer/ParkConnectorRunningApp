@@ -10,6 +10,6 @@
             android:title="Route Planning" />
         <item
             android:id="@+id/second"
-            android:title="Settings" />
+            android:title="History" />
     </group>
 </menu>

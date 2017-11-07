@@ -3,6 +3,8 @@ package com.example.a2006_3.parkconnectorrunningapp.RoutePlanning;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.Manifest;
 
@@ -12,7 +14,7 @@ public class WorkoutSummary extends AppCompatActivity {
 
     TextView summarytimeTextView, summarydistTextView, summarycaloriesTextView;
     int time;
-    float distance;
+    String distance;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +29,21 @@ public class WorkoutSummary extends AppCompatActivity {
         // Get data from previous screen regarding workout
         Intent intent = getIntent();
         time = intent.getIntExtra("time",0);
-        distance = intent.getFloatExtra("distance",0);
+        int sec = intent.getIntExtra("timeSec",0);
+        distance = intent.getStringExtra("distance");
+        float _distance = Float.valueOf(distance)/1000.0f;
+        // Added by Thomas
+        summarytimeTextView.setText(String.valueOf(time)+ " min " + String.valueOf(sec)+" sec");
+        summarydistTextView.setText(String.format("%.2f",_distance)+" km");
+        summarycaloriesTextView.setText(intent.getStringExtra("running") + " cal");
+        ((TextView)findViewById(R.id.summarycaloriesCyclingTextView)).setText(intent.getStringExtra("cycling") + " cal");
+        findViewById(R.id.finishWorkout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(WorkoutSummary.this,RoutePlanning.class);
+                startActivity(intent);
+            }
+        });
 
     }
 
