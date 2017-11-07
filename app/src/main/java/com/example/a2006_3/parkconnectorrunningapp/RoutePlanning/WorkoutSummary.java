@@ -10,7 +10,12 @@ import android.Manifest;
 
 import com.example.a2006_3.parkconnectorrunningapp.R;
 
-public class WorkoutSummary extends AppCompatActivity {
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+import static android.support.v7.appcompat.R.styleable.View;
+
+public class WorkoutSummary extends AppCompatActivity implements WorkoutsummaryAPI.RequestListener{
 
     TextView summarytimeTextView, summarydistTextView, summarycaloriesTextView;
     int time;
@@ -31,11 +36,13 @@ public class WorkoutSummary extends AppCompatActivity {
         time = intent.getIntExtra("time",0);
         int sec = intent.getIntExtra("timeSec",0);
         distance = intent.getStringExtra("distance");
+        String cal = intent.getStringExtra("running");
+        String formattedDate = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
 
         // Added by Thomas
         summarytimeTextView.setText(String.valueOf(time)+ " min " + String.valueOf(sec)+" sec");
         summarydistTextView.setText(distance+" km");
-        summarycaloriesTextView.setText(intent.getStringExtra("running") + " cal");
+        summarycaloriesTextView.setText(cal + " cal");
         ((TextView)findViewById(R.id.summarycaloriesCyclingTextView)).setText(intent.getStringExtra("cycling") + " cal");
         findViewById(R.id.finishWorkout).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,18 +52,12 @@ public class WorkoutSummary extends AppCompatActivity {
             }
         });
 
-    }
-
-    //Function to get data from previous screen/intent(?)
-    private void getData(int id){
-
-    }
-
-    //Update current text views using previous data
-    private void updateTextViews(int id){
-
+        new WorkoutsummaryAPI("trudy",String.valueOf(time),String.valueOf(sec),distance,cal,formattedDate,this).execute(); //executes workoutsummary API to send data to backend
     }
 
 
+    @Override
+    public void onFinished(String result) {
 
+    }
 }

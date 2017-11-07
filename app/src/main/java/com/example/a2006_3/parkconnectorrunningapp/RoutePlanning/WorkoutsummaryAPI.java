@@ -12,7 +12,7 @@ import java.net.URL;
 class WorkoutsummaryAPI extends AsyncTask<Void, Void, String> {
 
     private Exception exception;
-    private String username = "", time ="", dist ="", cal="";
+    private String username = "", min ="", sec = "", dist ="", cal="", date="";
 
     public interface RequestListener {
         void onFinished(String result);
@@ -20,8 +20,14 @@ class WorkoutsummaryAPI extends AsyncTask<Void, Void, String> {
 
     private final RequestListener requestListener;
 
-    public WorkoutsummaryAPI(String username, String time, String dist, String cal, RequestListener requestListener) {
+    public WorkoutsummaryAPI(String username, String min, String sec, String dist, String cal, String date, RequestListener requestListener) {
         super();
+        this.username = username;
+        this.min = min;
+        this.sec = sec;
+        this.dist = dist;
+        this.cal = cal;
+        this.date = date;
         this.requestListener = requestListener;
     }
 
@@ -30,8 +36,8 @@ class WorkoutsummaryAPI extends AsyncTask<Void, Void, String> {
 
     protected String doInBackground(Void... params) {
         try {
-            URL url = new URL("https://pr2006.herokuapp.com/addroute?name="+username+"&time="+time+"&distance="+dist+"&calorie="+cal);
-            Log.e("URL: ", "https://pr2006.herokuapp.com/addroute?name="+username+"&time="+time+"&distance="+dist+"&calorie="+cal);
+            URL url = new URL("https://pr2006.herokuapp.com/addroute?name="+username+"&minutes="+min+"&seconds="+sec+"&distance="+dist+"&calorie="+cal+"&date="+date);
+            Log.e("URL: ", "https://pr2006.herokuapp.com/addroute?name="+username+"&minutes="+min+"&seconds="+sec+"&distance="+dist+"&calorie="+cal+"&date="+date);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             try {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
@@ -56,6 +62,7 @@ class WorkoutsummaryAPI extends AsyncTask<Void, Void, String> {
         if(response == null) {
             response = "Error with Route API response";
         }
+
         this.requestListener.onFinished(response);
     }
 }

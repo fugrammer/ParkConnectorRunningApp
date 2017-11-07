@@ -7,33 +7,6 @@
     tools:context="com.example.a2006_3.parkconnectorrunningapp.RoutePlanning.WorkoutSummary">
 
     <TextView
-        android:id="@+id/minutesUnitsLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="min"
-        app:layout_constraintBaseline_toBaselineOf="@+id/summaryminutesTextView"
-        app:layout_constraintLeft_toRightOf="@+id/summaryminutesTextView"
-        android:layout_marginLeft="0dp" />
-
-    <TextView
-        android:id="@+id/secondsUnitsLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="s"
-        app:layout_constraintLeft_toRightOf="@+id/summarysecondsTextView"
-        android:layout_marginLeft="0dp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/summarysecondsTextView" />
-
-    <TextView
-        android:id="@+id/summarysecondsTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="00"
-        android:layout_marginLeft="288dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBaseline_toBaselineOf="@+id/minutesUnitsLabel" />
-
-    <TextView
         android:id="@+id/distance"
         android:layout_width="81dp"
         android:layout_height="21dp"
@@ -104,48 +77,48 @@
         android:layout_marginBottom="8dp" />
 
     <TextView
-        android:id="@+id/summaryminutesTextView"
+        android:id="@+id/summarytimeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="00"
+        android:layout_marginLeft="86dp"
+        android:text="00 min 00 sec"
         app:layout_constraintBaseline_toBaselineOf="@+id/timetakenLabel"
-        app:layout_constraintLeft_toRightOf="@+id/timetakenLabel"
-        android:layout_marginLeft="86dp" />
+        app:layout_constraintLeft_toRightOf="@+id/timetakenLabel" />
 
     <TextView
         android:id="@+id/summarydistTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="10km"
+        android:layout_marginLeft="117dp"
+        android:text="00 km"
         app:layout_constraintBaseline_toBaselineOf="@+id/distance"
-        app:layout_constraintLeft_toRightOf="@+id/distance"
-        android:layout_marginLeft="117dp" />
+        app:layout_constraintLeft_toRightOf="@+id/distance" />
 
     <TextView
         android:id="@+id/summarycaloriesTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="100cal"
-        app:layout_constraintBottom_toBottomOf="@+id/caloriesburn"
         android:layout_marginBottom="0dp"
-        app:layout_constraintTop_toTopOf="@+id/caloriesburn"
-        android:layout_marginTop="0dp"
         android:layout_marginLeft="0dp"
-        app:layout_constraintVertical_bias="0.6"
-        app:layout_constraintLeft_toLeftOf="@+id/summarydistTextView" />
+        android:layout_marginTop="0dp"
+        android:text="00 cal"
+        app:layout_constraintBottom_toBottomOf="@+id/caloriesburn"
+        app:layout_constraintLeft_toLeftOf="@+id/summarydistTextView"
+        app:layout_constraintTop_toTopOf="@+id/caloriesburn"
+        app:layout_constraintVertical_bias="0.6" />
 
     <TextView
         android:id="@+id/summarycaloriesCyclingTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="100cal"
-        app:layout_constraintBottom_toBottomOf="@+id/caloriesburncycling"
         android:layout_marginBottom="0dp"
-        app:layout_constraintTop_toTopOf="@+id/caloriesburncycling"
-        android:layout_marginTop="0dp"
         android:layout_marginLeft="0dp"
-        app:layout_constraintVertical_bias="0.6"
-        app:layout_constraintLeft_toLeftOf="@+id/summarycaloriesTextView" />
+        android:layout_marginTop="0dp"
+        android:text="00 cal"
+        app:layout_constraintBottom_toBottomOf="@+id/caloriesburncycling"
+        app:layout_constraintLeft_toLeftOf="@+id/summarycaloriesTextView"
+        app:layout_constraintTop_toTopOf="@+id/caloriesburncycling"
+        app:layout_constraintVertical_bias="0.6" />
 
 
 </android.support.constraint.ConstraintLayout>
