@@ -34,10 +34,14 @@ import com.example.a2006_3.parkconnectorrunningapp.Commons.Coordinate;
 import com.example.a2006_3.parkconnectorrunningapp.Commons.DrawerItemCustomAdapter;
 import com.example.a2006_3.parkconnectorrunningapp.R;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.maps.android.SphericalUtil;
 
 import org.json.JSONArray;
 
 import java.util.ArrayList;
+
+import static com.google.maps.android.SphericalUtil.computeDistanceBetween;
 
 public class RoutePlanner extends AppCompatActivity implements ListView.OnItemClickListener, RouteAPI.RequestListener, MapViewFragment.PolylineClickListener {
 
@@ -50,13 +54,15 @@ public class RoutePlanner extends AppCompatActivity implements ListView.OnItemCl
     private ArrayList<ArrayList<Coordinate>> routeList = new ArrayList<>();
     private ArrayList<Double> routeDistance = new ArrayList<>();
     boolean firstTime = true, running = false;
+    private float distanceRan = 0.0f;
     LocationManager locationManager;
-    Location myLocation;
+    Location myLocation, previousLocation;
     MapViewFragment mapViewFragment;
     ProgressBar progressBar;
     Animation inAnimation,outAnimation;
     TextView runningTextView, cyclingTextView, distanceTextView, cyclingTextTextView,
-            runningTextTextView, distanceTextTextView, expectedCalorieTextView;
+            runningTextTextView, distanceTextTextView, expectedCalorieTextView,
+            distanceRanTextView;
     Button activateButton;
 
     DrawerLayout dLayout;
@@ -85,6 +91,7 @@ public class RoutePlanner extends AppCompatActivity implements ListView.OnItemCl
         cyclingTextTextView = (TextView) findViewById(R.id.cyclingTextTextView);
         distanceTextTextView = (TextView) findViewById(R.id.distanceTextTextView);
         expectedCalorieTextView = (TextView) findViewById(R.id.expectedCalorieTextView);
+        distanceRanTextView = (TextView) findViewById(R.id.distanceRanTextView);
         activateButton = (Button) findViewById(R.id.activateButton);
         mapViewFragment = (MapViewFragment)
                 getSupportFragmentManager().findFragmentById(R.id.mapFragment);
@@ -102,6 +109,7 @@ public class RoutePlanner extends AppCompatActivity implements ListView.OnItemCl
     public void startNavigation(View view){
         if (running==false) {
             running = true;
+            distanceRan = 0.0f;
             dLayout.closeDrawers();
             dLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             mapViewFragment.clearRoutesBut(routeSelected);
@@ -114,6 +122,7 @@ public class RoutePlanner extends AppCompatActivity implements ListView.OnItemCl
             cyclingTextTextView.setVisibility(View.INVISIBLE);
             activateButton.setText("Finish");
             timeTextView.setVisibility(View.VISIBLE);
+            distanceRanTextView.setVisibility(View.VISIBLE);
             mapViewFragment.zoomIn(myLocation);
             handler.postDelayed(runnable, 1000);
         }else{
@@ -122,6 +131,7 @@ public class RoutePlanner extends AppCompatActivity implements ListView.OnItemCl
             Intent intent = new Intent(RoutePlanner.this, WorkoutSummary.class);
             intent.putExtra("time",minElapsed);
             intent.putExtra("timeSec",secElapsed);
+            intent.putExtra("distanceRan",distanceRan);
             intent.putExtra("distance",distanceTextView.getText());
             intent.putExtra("running",runningTextView.getText());
             intent.putExtra("cycling",cyclingTextView.getText());
@@ -196,7 +206,12 @@ public class RoutePlanner extends AppCompatActivity implements ListView.OnItemCl
             }
             if (running){
                 mapViewFragment.zoomIn(location);
+                LatLng currentLatLng = new LatLng(location.getLatitude(),location.getLongitude());
+                LatLng previousLatLng= new LatLng(previousLocation.getLatitude(),previousLocation.getLongitude());
+                distanceRan += computeDistanceBetween(previousLatLng,currentLatLng);
+                distanceRanTextView.setText(String.format("%.2f km",distanceRan/1000.0));
             }
+            previousLocation = location;
         }
         public void onStatusChanged(String provider, int status, Bundle extras) {}
         public void onProviderEnabled(String provider) {}
